@@ -1,11 +1,13 @@
 import os
 
+import launchd
+
 USER_AGENTS = os.path.expanduser('~/Library/LaunchAgents')
 ADMIN_AGENTS = '/Library/LaunchAgents'
 OS_AGENTS = '/System/Library/LaunchAgents'
 
 
-def job_type(j):
+def _job_type(j):
     pname = j.plistfilename
     if not pname:
         return 0
@@ -17,3 +19,7 @@ def job_type(j):
         return 3
     else:
         return 0
+
+
+def get_user_agents():
+    return filter(lambda j: _job_type(j) == 1, launchd.jobs())
